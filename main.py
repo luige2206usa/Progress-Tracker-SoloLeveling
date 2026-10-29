@@ -1,6 +1,7 @@
 import sqlite3
 from app.stats import athletic_summary, golf_summary, climb_summary
 from app.leveling import player_status
+from app.coach import get_coach_message, CoachError
 
 from datetime import date
 
@@ -11,6 +12,8 @@ from app.db import (
     add_climb,
     add_completed_class,
     get_progress,
+    add_coach_message,
+    get_recent_coach_messages,
 )
 from app.validation import is_valid_date
 
@@ -112,6 +115,10 @@ def log_athletic_skill():
             body_weight = ask_float("Body weight (lbs): ", minimum=1)
         elif choice == "5":
             show_report()
+        elif choice == "6":
+            show_coach()
+        elif choice == "7":
+            show_past_coach_messages()
         elif choice == "0":
             break
         else:
@@ -219,6 +226,27 @@ def show_report():
     taken, left = get_progress()
     print(f"Classes completed: {taken} | classes left: {left}")
 
+def show_coach():
+    print("\n=== Coach ===")
+    print("Contacting the System...")
+    try:
+        message = get_coach_message()
+    except CoachError as error:
+        print(f"Coach unavailable: {error}")
+        return
+    print("\n" + message)
+    add_coach_message(date.today().isoformat(), message)
+
+
+def show_past_coach_messages():
+    print("\n=== Past Coach Messages ===")
+    rows = get_recent_coach_messages()
+    if not rows:
+        print("No coach messages yet.")
+        return
+    for day, message in rows:
+        print(f"\n[{day}]\n{message}")
+
 
 def show_menu():
     print("\n=== Progress Tracker ===")
@@ -227,6 +255,8 @@ def show_menu():
     print("3. Log climb")
     print("4. Log software development progress")
     print("5. View progress report")
+    print("6. Ask the coach")
+    print("7. Past coach messages")
     print("0. Exit")
 
 
@@ -245,6 +275,10 @@ def main():
             log_software_progress()
         elif choice == "5":
             show_report()
+        elif choice == "6":
+            show_coach()
+        elif choice == "7":
+            show_past_coach_messages()
         elif choice == "0":
             print("Goodbye!")
             break

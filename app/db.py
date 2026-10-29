@@ -56,6 +56,14 @@ def create_tables():
         )
     """)
 
+    cursor.execute("""
+        CREATE TABLE IF NOT EXISTS coach_messages (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            date TEXT NOT NULL,
+            message TEXT NOT NULL
+        )
+    """)
+
     conn.commit()
     conn.close()
 
@@ -109,3 +117,21 @@ def get_progress():
     ).fetchone()[0]
     conn.close()
     return count, TOTAL_CLASSES - count
+
+
+def add_coach_message(date, message):
+    _insert(
+        "INSERT INTO coach_messages (date, message) VALUES (?, ?)",
+        (date, message),
+    )
+
+
+def get_recent_coach_messages(limit=5):
+    """Return the newest messages first, as (date, message) pairs."""
+    conn = get_connection()
+    rows = conn.execute(
+        "SELECT date, message FROM coach_messages ORDER BY id DESC LIMIT ?",
+        (limit,),
+    ).fetchall()
+    conn.close()
+    return rows
