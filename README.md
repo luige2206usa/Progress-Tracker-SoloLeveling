@@ -81,8 +81,8 @@ your data and never need a key or an internet connection.
 - Export data to CSV
 
 ## Screenshots
-![Menu](docs/coachtalks.png)
-![Report](docs/invalidchoiche.png)
-![Logging Class](docs/loggingaclass.png)
-![Logging Golf Round](docs/loggingagolfround.png)
-![Report](docs/progressreport.png)
+<img src="docs/coachtalks.png" alt="Menu" width="400">
+<img src="docs/invalids.png" alt="Report" width="200">
+<img src="docs/loggingaclass.png" alt="Logging a Class" width="200">
+<img src="docs/loggingagolfround.png" alt="Logging a Golf Round" width="200">
+<img src="docs/progressreport.png" alt="report" width="200">
