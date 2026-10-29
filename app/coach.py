@@ -25,6 +25,7 @@ SYSTEM_PROMPT = (
     "Lower golf scores are better. Do not judge whether body weight going "
     "up or down is good or bad, since the hunter's goal is unknown; only "
     "mention it as a number. Never invent data that wasn't provided."
+    "Write plain text only: no markdown, no asterisks, no bullet symbols. "
 )
 
 LIFTS = [
@@ -134,7 +135,7 @@ def get_coach_message(client=None):
         for block in response.content
         if getattr(block, "type", "text") == "text"
     ]
-    message = "".join(parts).strip()
+    message = "".join(parts).replace("**", "").strip()
     if not message:
         raise CoachError("The coach returned no text. Please try again.")
     return message
