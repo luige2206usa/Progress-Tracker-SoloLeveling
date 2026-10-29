@@ -1,5 +1,7 @@
 from types import SimpleNamespace
 
+import anthropic
+import httpx
 import pytest
 
 from app import coach, db
@@ -85,3 +87,46 @@ def test_coach_skips_thinking_blocks(fresh_db):
     message = coach.get_coach_message(client=ThinkingThenTextClient())
 
     assert message == "Level up, Hunter."
+
+
+class FailingClient:
+    """Fake client whose request always raises the error you give it."""
+
+    def __init__(self, error):
+        def fail(**kwargs):
+            raise error
+
+        self.messages = SimpleNamespace(create=fail)
+
+
+def make_request():
+    return httpx.Request("POST", "https://api.anthropic.com/v1/messages")
+
+
+def test_coach_reports_connection_problems(fresh_db):
+    error = anthropic.APIConnectionError(request=make_request())
+
+    with pytest.raises(coach.CoachError, match="internet"):
+        coach.get_coach_message(client=FailingClient(error))
+
+
+def test_coach_reports_a_rejected_key(fresh_db):
+    response = httpx.Response(401, request=make_request())
+    error = anthropic.AuthenticationError("bad key", response=response, body=None)
+
+    with pytest.raises(coach.CoachError, match="key was rejected"):
+        coach.get_coach_message(client=FailingClient(error))
+
+
+def test_coach_rejects_a_reply_with_no_text(fresh_db):
+    class ThinkingOnlyClient:
+        def __init__(self):
+            self.messages = SimpleNamespace(create=self._create)
+
+        def _create(self, **kwargs):
+            return SimpleNamespace(
+                content=[SimpleNamespace(type="thinking", thinking="hmm")]
+            )
+
+    with pytest.raises(coach.CoachError, match="no text"):
+        coach.get_coach_message(client=ThinkingOnlyClient())

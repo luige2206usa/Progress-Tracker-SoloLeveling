@@ -5,7 +5,7 @@ from dotenv import load_dotenv
 
 from app.db import get_progress
 from app.leveling import player_status
-from app.stats import athletic_summary, golf_summary, climb_summary
+from app.stats import athletic_summary, climb_summary, golf_summary
 
 # Read the .env file once, when this file is first loaded.
 load_dotenv()
@@ -42,9 +42,12 @@ def build_progress_text():
     """Turn your saved data into plain text the coach can read."""
     status = player_status()
     lines = [
-        f"Hunter status: rank {status['rank']}, level {status['level']}, "
-        f"{status['xp']} XP."
+        (
+            f"Hunter status: rank {status['rank']}, level {status['level']}, "
+            f"{status['xp']} XP."
+        )
     ]
+
 
     for column, label, unit in LIFTS:
         summary = athletic_summary(column)

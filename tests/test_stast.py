@@ -1,6 +1,6 @@
 import pytest
 
-from app import db, stats, leveling
+from app import db, leveling, stats
 
 
 @pytest.fixture

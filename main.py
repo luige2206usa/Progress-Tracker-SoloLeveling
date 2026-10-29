@@ -1,20 +1,19 @@
 import sqlite3
-from app.stats import athletic_summary, golf_summary, climb_summary
-from app.leveling import player_status
-from app.coach import get_coach_message, CoachError
-
 from datetime import date
 
+from app.coach import CoachError, get_coach_message
 from app.db import (
-    create_tables,
     add_athletic_skill,
-    add_golf_round,
     add_climb,
-    add_completed_class,
-    get_progress,
     add_coach_message,
+    add_completed_class,
+    add_golf_round,
+    create_tables,
+    get_progress,
     get_recent_coach_messages,
 )
+from app.leveling import player_status
+from app.stats import athletic_summary, climb_summary, golf_summary
 from app.validation import is_valid_date
 
 
