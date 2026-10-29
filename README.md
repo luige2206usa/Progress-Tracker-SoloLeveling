@@ -1,6 +1,6 @@
 # Progress Tracker: Solo Leveling Edition
 
-![Tests]([![Tests](https://github.com/luige2206usa/Progress-Tracker-SoloLeveling/actions/workflows/tests.yml/badge.svg)](https://github.com/luige2206usa/Progress-Tracker-SoloLeveling/actions/workflows/tests.yml))
+[![Tests](https://github.com/luige2206usa/Progress-Tracker-SoloLeveling/actions/workflows/tests.yml/badge.svg)](https://github.com/luige2206usa/Progress-Tracker-SoloLeveling/actions/workflows/tests.yml)
 
 A Python command-line app that tracks my progress in golf, climbing,
 athletic performance, and my software degree. It turns the data into
