@@ -81,5 +81,6 @@ your data and never need a key or an internet connection.
 - Export data to CSV
 
 ## Screenshots
-<img src="docs/coachtalks.png" alt="Menu" width="1000">
-<img src="docs/progressreport.png" alt="report" width="500">
+<img src="docs/coachtalks.png" alt="Menu" width="2000">
+<img src="docs/progressreport.png" alt="report" width="300">
+<img src="docs/menu.png" alt="menu" width="900">
