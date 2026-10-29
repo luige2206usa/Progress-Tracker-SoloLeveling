@@ -1,4 +1,6 @@
 import sqlite3
+from app.stats import athletic_summary, golf_summary, climb_summary
+from app.leveling import player_status
 
 from datetime import date
 
@@ -108,6 +110,8 @@ def log_athletic_skill():
             upperbody_weight = ask_float("Upper body lift weight (lbs): ")
         elif choice == "4":
             body_weight = ask_float("Body weight (lbs): ", minimum=1)
+        elif choice == "5":
+            show_report()
         elif choice == "0":
             break
         else:
@@ -164,12 +168,65 @@ def log_software_progress():
     print(f"Saved! Classes completed: {taken} | Classes left: {left}")
 
 
+def show_report():
+    print("\n=== Progress Report ===")
+
+    status = player_status()
+    print(f"Rank {status['rank']} | Level {status['level']} | "
+          f"{status['xp']} XP ({status['xp_to_next']} XP to next level)")
+
+    print("\n-- Athletic skills --")
+    lifts = [
+        ("jump_height", "Vertical jump", "in"),
+        ("deadlift_weight", "Deadlift", "lbs"),
+        ("upperbody_weight", "Upper body lift", "lbs"),
+    ]
+    for column, label, unit in lifts:
+        summary = athletic_summary(column)
+        if summary is None:
+            print(f"{label}: no data yet")
+        else:
+            print(f"{label}: best {summary['best']:g} {unit} | "
+                  f"latest {summary['latest']:g} {unit} | "
+                  f"change {summary['change']:+g} {unit}")
+
+    body = athletic_summary("body_weight")
+    if body is None:
+        print("Body weight: no data yet")
+    else:
+        print(f"Body weight: latest {body['latest']:g} lbs | "
+              f"change {body['change']:+g} lbs")
+
+    print("\n-- Golf (18-hole rounds) --")
+    golf = golf_summary()
+    if golf is None:
+        print("No 18-hole rounds yet")
+    else:
+        print(f"Rounds: {golf['rounds']} | best {golf['best']} | "
+              f"average {golf['average']} | latest {golf['latest']}")
+        print(f"Change since first round: {golf['change']:+d} (lower is better)")
+
+    print("\n-- Climbing --")
+    climbs = climb_summary()
+    if climbs is None:
+        print("No climbs yet")
+    else:
+        hardest = climbs["hardest"] or "none yet"
+        print(f"Climbs: {climbs['climbs']} | sent {climbs['sent']} "
+              f"({climbs['send_rate']}%) | hardest send: {hardest}")
+
+    print("\n-- Software development --")
+    taken, left = get_progress()
+    print(f"Classes completed: {taken} | classes left: {left}")
+
+
 def show_menu():
     print("\n=== Progress Tracker ===")
     print("1. Log athletic skills")
     print("2. Log golf round")
     print("3. Log climb")
     print("4. Log software development progress")
+    print("5. View progress report")
     print("0. Exit")
 
 
@@ -186,6 +243,8 @@ def main():
             log_climb()
         elif choice == "4":
             log_software_progress()
+        elif choice == "5":
+            show_report()
         elif choice == "0":
             print("Goodbye!")
             break
