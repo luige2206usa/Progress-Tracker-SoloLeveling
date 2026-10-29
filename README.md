@@ -1,6 +1,6 @@
 # Progress Tracker: Solo Leveling Edition
 
-![Tests](https://github.com/luige2206usa/REPO-NAME/actions/workflows/tests.yml/badge.svg)
+![Tests]([![Tests](https://github.com/luige2206usa/Progress-Tracker-SoloLeveling/actions/workflows/tests.yml/badge.svg)](https://github.com/luige2206usa/Progress-Tracker-SoloLeveling/actions/workflows/tests.yml))
 
 A Python command-line app that tracks my progress in golf, climbing,
 athletic performance, and my software degree. It turns the data into
@@ -22,11 +22,6 @@ a project to practice SQL, testing, and working with an LLM API.
 - AI coach: sends a summary of my numbers to the Claude API and saves
   each reply so I can reread it
 - Input validation on every prompt (dates, numbers, ranges)
-
-## Screenshots
-![Menu](docs/menu.png)
-![Report](docs/report.png)
-![Coach](docs/coach.png)
 
 ## Tech stack
 Python 3.13, SQLite (`sqlite3`), Anthropic API, pytest, pytest-cov,
@@ -83,4 +78,3 @@ your data and never need a key or an internet connection.
 ## Screenshots
 <img src="docs/coachtalks.png" alt="Menu" width="2000">
 <img src="docs/progressreport.png" alt="report" width="300">
-<img src="docs/menu.png" alt="menu" width="900">
